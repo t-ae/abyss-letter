@@ -20,13 +20,11 @@ y_val = np.load(os.path.join(files_dir, "./train/y_val.npy"))
 model_path = os.path.join(files_dir, "./abyss_model.h5")
 
 if os.path.exists(model_path):
+    print("load model")
     model = load_model(model_path)
 else:
     model = Sequential([
-        Convolution2D(32, 5, 5, border_mode='same', input_shape=[63, 64, 1]),
-        ELU(),
-        MaxPooling2D(border_mode='same'), # 32x32
-        Convolution2D(64, 5, 5, border_mode='same'),
+        Convolution2D(32, 5, 5, border_mode='same', input_shape=[32, 32, 1]),
         ELU(),
         MaxPooling2D(border_mode='same'), #16x16
         Convolution2D(128, 5, 5, border_mode='same'),
@@ -42,18 +40,15 @@ else:
     ])
 
     model.compile(optimizer='adam', 
-                loss='binary_crossentropy', 
-                metrics=['accuracy'])
+                loss='binary_crossentropy')
 
 model.fit(X_train, y_train,
-    nb_epoch=10,
-    batch_size=64,
+    nb_epoch=30,
+    batch_size=128,
     validation_data=(X_val, y_val),
     callbacks=[
         EarlyStopping(),
         TensorBoard(log_dir='/tmp/abyss_logs')
     ])
-
-model.summary()
 
 model.save(model_path)

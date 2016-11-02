@@ -10,6 +10,7 @@ import os
 BYTES_IN_RECORD = 2052
 
 width, height = 64, 63
+out_size = 32
 bpp = 4 # bits per pixel
 
 def bits_to_image(bits):
@@ -25,6 +26,8 @@ def bits_to_image(bits):
     data = data.astype(np.float32) / max
     # thresh
     data[data<0.5] = 0
+    # resize to 32x32
+    data = data[::2, ::2]
 
     return data
 
@@ -67,10 +70,6 @@ hiragana_chars = [
      "RI",
      " N",
      "- "
-     #
-     "SE",
-     "NU",
-     "HO"
 ]
 
 katakana_files = [
@@ -89,17 +88,16 @@ katakana_chars = [
     "MA", "MI", "ME", "MO",
     "RA", "RI", "RU", "RE", "RO",
     "WA", " N",
-    "- ",
-    #
-     "SE",
-     "NU",
-     "HO"
+    "- "
 ]
 
-hiragana_dic = get_dictionary(hiragana_files, hiragana_chars)
-katakana_dic = get_dictionary(katakana_files, katakana_chars)
+target_chars = [ "SE", "NU", "HO" ]
+
+hiragana_dic = get_dictionary(hiragana_files, hiragana_chars + target_chars)
+katakana_dic = get_dictionary(katakana_files, katakana_chars + target_chars)
 
 keyset = set(hiragana_dic.keys()) | set(katakana_dic.keys())
+print(keyset)
 
 for k in keyset:
     if k in hiragana_dic and k in katakana_dic:
@@ -111,13 +109,13 @@ for k in keyset:
     else:
         continue
     
-    images = v.reshape([-1, height, width])
+    images = v.reshape([-1, out_size, out_size, 1])
     print(k,":",images.shape[0])
 
     train_file_name = "data/train_"+k.strip()+".npy"
     test_file_name = "data/test_"+k.strip()+".npy"
 
-    test_num = 5
+    test_num = 10
     np.random.shuffle(images)
     np.save(train_file_name, images[test_num:])
     np.save(test_file_name, images[:test_num])

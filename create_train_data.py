@@ -7,8 +7,7 @@ from PIL import Image
 
 files_dir = os.path.dirname(__file__)
 
-w, h = 64, 63
-y_size = 32
+size = 32
 
 # create train data
 abyss_letter_dir = os.path.join(files_dir, "./abyss_letters/*.png")
@@ -36,10 +35,10 @@ for f in glob.glob(abyss_letter_dir):
     X_val = np.concatenate([X_val, data[:vals].ravel()])
     y_val = np.concatenate([y_val] + [abyss_image.ravel()]*vals)
 
-X_train = X_train.reshape([-1, h, w, 1])
-y_train = y_train.reshape([-1, y_size, y_size, 1])
-X_val= X_val.reshape([-1, h, w, 1])
-y_val = y_val.reshape([-1, y_size, y_size, 1])
+X_train = X_train.reshape([-1, size, size, 1])
+y_train = y_train.reshape([-1, size, size, 1])
+X_val= X_val.reshape([-1, size, size, 1])
+y_val = y_val.reshape([-1, size, size, 1])
 
 print("train X: {0}, y: {1}".format(X_train.shape, y_train.shape))
 print("val   X: {0}, y: {1}".format(X_val.shape, y_val.shape))
