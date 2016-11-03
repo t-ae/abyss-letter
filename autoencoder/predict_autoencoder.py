@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
-from keras.models import Model
-from keras.layers import Input
-from keras.layers.convolutional import Convolution2D, UpSampling2D
-from keras.layers.pooling import MaxPooling2D
-from keras.callbacks import EarlyStopping, TensorBoard
+from keras.models import load_model
 import numpy as np
+import matplotlib.pyplot as plt
+import sys
 import os
 
 files_dir = os.path.dirname(__file__)
@@ -25,13 +23,13 @@ if not os.path.exists(file_path):
 images = np.load(file_path)
 
 # load model
-if not os.path.exists(model_path):
+if not os.path.exists(autoencoder_path):
     print("Model file not found:", autoencoder_path)
     exit(-1)
 
 # predict
-model = load_model(model_path)
-p = model.predict(images)
+autoencoder = load_model(autoencoder_path)
+p = autoencoder.predict(images)
 
 plt.figure(figsize=(16, 4))
 n = 5

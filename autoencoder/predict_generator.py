@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-from keras.models import Model
-from keras.layers import Input
-from keras.layers.convolutional import Convolution2D, UpSampling2D
-from keras.layers.pooling import MaxPooling2D
-from keras.callbacks import EarlyStopping, TensorBoard
+from keras.models import Sequential, load_model
 import numpy as np
+import matplotlib.pyplot as plt
+import sys
 import os
 
 files_dir = os.path.dirname(__file__)
+encoder_path = os.path.join(files_dir, "./encoder_model.h5")
 generator_path = os.path.join(files_dir, "./generator_model.h5")
 
 # load images
@@ -25,12 +24,17 @@ if not os.path.exists(file_path):
 images = np.load(file_path)
 
 # load model
-if not os.path.exists(model_path):
+if not os.path.exists(encoder_path):
+    print("Model file not found:", encoder_path)
+    exit(-1)
+if not os.path.exists(generator_path):
     print("Model file not found:", generator_path)
     exit(-1)
 
 # predict
-model = load_model(model_path)
+encoder = loaad_model(encoder_path)
+generator = load_model(generator_path)
+model = Sequential([encoder, generator])
 p = model.predict(images)
 
 plt.figure(figsize=(16, 4))
