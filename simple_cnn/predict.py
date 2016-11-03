@@ -18,7 +18,6 @@ if not os.path.exists(file_path):
     exit(-1)
 
 images = np.load(file_path)
-images = images[:, ::2, ::2].reshape([-1, 32, 32, 1])
 
 # load model
 model_path = os.path.join(os.path.dirname(__file__), "./abyss_model.h5")

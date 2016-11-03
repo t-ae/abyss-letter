@@ -20,14 +20,14 @@ def bits_to_image(bits):
     bits = np.hstack([pad, bits])
     
     # float image
-    data = np.packbits(bits)
-    data = data.reshape([height, width])
+    data = np.packbits(bits).astype(np.float32)
     max = np.power(2, bpp)-1
-    data = data.astype(np.float32) / max
+    data = data / max
     # thresh
     data[data<0.5] = 0
-    # resize to 32x32
-    data = data[::2, ::2]
+    # append row & resize to 32x32
+    data = np.append(data, np.zeros(width)).reshape([width, width])
+    data = (data[::2, ::2] + data[1::2, ::2] + data[::2, 1::2] + data[1::2, 1::2])/4
 
     return data
 
@@ -97,7 +97,6 @@ hiragana_dic = get_dictionary(hiragana_files, hiragana_chars + target_chars)
 katakana_dic = get_dictionary(katakana_files, katakana_chars + target_chars)
 
 keyset = set(hiragana_dic.keys()) | set(katakana_dic.keys())
-print(keyset)
 
 for k in keyset:
     if k in hiragana_dic and k in katakana_dic:
