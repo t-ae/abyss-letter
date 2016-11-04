@@ -45,6 +45,9 @@ else:
         exit(-1)
     encoder = load_model(encoder_path)
     encoder.trainable = False
+    for layer in encoder.layers:
+        layer.trainable = False
+    
     generator = Sequential([
         Convolution2D(32, 3, 3, border_mode='same', input_shape=[4, 4, 16]),
         ELU(),
@@ -64,7 +67,7 @@ else:
     model.fit(X_train, y_train,
         nb_epoch=100,
         batch_size=128,
-        validation_data=(X_val, y_val),
+        #validation_data=(X_val, y_val),
         callbacks=[
             EarlyStopping(patience=2),
             TensorBoard(log_dir=tensorboard_logdir)
