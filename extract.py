@@ -91,7 +91,7 @@ katakana_chars = [
     "- "
 ]
 
-target_chars = [ "SE", "NU", "HO" ]
+target_chars = [ "SE", "NU", "HO", "WO" ]
 
 hiragana_dic = get_dictionary(hiragana_files, hiragana_chars + target_chars)
 katakana_dic = get_dictionary(katakana_files, katakana_chars + target_chars)
