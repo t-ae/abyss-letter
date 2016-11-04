@@ -7,7 +7,6 @@ import sys
 import os
 
 files_dir = os.path.dirname(__file__)
-encoder_path = os.path.join(files_dir, "./encoder_model.h5")
 generator_path = os.path.join(files_dir, "./generator_model.h5")
 
 # load images
