@@ -30,8 +30,7 @@ if os.path.exists(autoencoder_path):
                     batch_size=128,
                     validation_data=(X_val, X_val),
                     callbacks=[
-                        EarlyStopping(patience=3),
-                        TensorBoard(log_dir=tensorboard_logdir)
+                        EarlyStopping(patience=3)
                     ])
     
 else:

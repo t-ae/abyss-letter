@@ -24,18 +24,13 @@ if not os.path.exists(file_path):
 images = np.load(file_path)
 
 # load model
-if not os.path.exists(encoder_path):
-    print("Model file not found:", encoder_path)
-    exit(-1)
 if not os.path.exists(generator_path):
     print("Model file not found:", generator_path)
     exit(-1)
 
 # predict
-encoder = loaad_model(encoder_path)
 generator = load_model(generator_path)
-model = Sequential([encoder, generator])
-p = model.predict(images)
+p = generator.predict(images)
 
 plt.figure(figsize=(16, 4))
 n = 5

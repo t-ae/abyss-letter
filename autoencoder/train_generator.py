@@ -21,55 +21,53 @@ y_train = np.load(os.path.join(files_dir, "../train_data/y_train.npy"))
 X_val = np.load(os.path.join(files_dir, "../train_data/X_val.npy"))
 y_val = np.load(os.path.join(files_dir, "../train_data/y_val.npy"))
 
-# load encoder
-if not os.path.exists(encoder_path):
-    print("Encoder model file not found")
-    exit(-1)
-encoder = load_model(encoder_path)
-encoder.trainable = False
 
-# load generator
+
+# create model
 if os.path.exists(generator_path):
     print("load model & fine tuning")
-    generator = load_model(generator_path)
-
-    model = Sequential([encoder, generator])
+    model = load_model(generator_path)
 
     sgd = SGD(lr=1e-4, momentum=0.9)
     model.compile(optimizer=sgd, loss='binary_crossentropy')
 
     model.fit(X_train, y_train,
-        nb_epoch=0,
+        nb_epoch=100,
         batch_size=128,
         validation_data=(X_val, y_val),
         callbacks=[
-            EarlyStopping(patience=3),
-            TensorBoard(log_dir=tensorboard_logdir)
+            EarlyStopping(patience=1)
         ])
 else:
+    # load encoder
+    if not os.path.exists(encoder_path):
+        print("Encoder model file not found")
+        exit(-1)
+    encoder = load_model(encoder_path)
+    encoder.trainable = False
     generator = Sequential([
-        Convolution2D(16, 3, 3, border_mode='same', input_shape=[4, 4, 16]),
+        Convolution2D(32, 3, 3, border_mode='same', input_shape=[4, 4, 16]),
         ELU(),
         UpSampling2D(), # 8x8
         Convolution2D(32, 3, 3, border_mode='same'),
         ELU(),
         UpSampling2D(), # 16x16
-        Convolution2D(16, 5, 5, border_mode='same'),
+        Convolution2D(64, 5, 5, border_mode='same'),
         ELU(),
         UpSampling2D(), # 32x32
-        Convolution2D(1, 5, 5, border_mode='same')
+        Convolution2D(1, 5, 5, border_mode='same', activation='sigmoid')
     ])
 
     model = Sequential([encoder, generator])
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
     model.fit(X_train, y_train,
-        nb_epoch=0,
+        nb_epoch=100,
         batch_size=128,
         validation_data=(X_val, y_val),
         callbacks=[
-            EarlyStopping(patience=3),
+            EarlyStopping(patience=2),
             TensorBoard(log_dir=tensorboard_logdir)
         ])
 
-generator.save(generator_path)
+model.save(generator_path)

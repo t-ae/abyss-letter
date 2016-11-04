@@ -5,15 +5,21 @@ import glob
 import numpy as np
 from PIL import Image
 
-files_dir = os.path.dirname(__file__)
 
-size = 32
-
+# rotation angle of abyss letters
 rotate_max = 15
 
+
+files_dir = os.path.dirname(__file__)
+size = 32
+
+
 def transform_images(image, num):
-    rotate = np.random.uniform(-rotate_max, rotate_max, num)
-    return [image.rotate(rotate[i]) for i in range(num)]
+    if rotate_max == 0:
+        return [image]*num
+    else:
+        rotate = np.random.uniform(-rotate_max, rotate_max, num)
+        return [image.rotate(rotate[i]) for i in range(num)]
     
 
 # create train data
