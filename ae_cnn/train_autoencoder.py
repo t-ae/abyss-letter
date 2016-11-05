@@ -53,9 +53,7 @@ else:
         Convolution2D(1, 5, 5, border_mode='same', activation='sigmoid')
     ])
 
-    autoencoder = Sequential()
-    autoencoder.add(encoder)
-    autoencoder.add(decoder)
+    autoencoder = Sequential([encoder, decoder])
 
     autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
