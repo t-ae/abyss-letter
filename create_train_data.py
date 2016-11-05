@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 
 
-# rotation angle of abyss letters
+# max rotation angle of abyss letters
 rotate_max = 15
 
 
@@ -31,6 +31,7 @@ y_train = np.array([])
 X_val = np.array([])
 y_val = np.array([])
 
+# only includes existing abyss letter images
 for f in glob.glob(abyss_letter_dir):
     char = os.path.splitext(os.path.basename(f))[0]
     print(char)

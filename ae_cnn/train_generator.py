@@ -67,9 +67,9 @@ else:
     model.fit(X_train, y_train,
         nb_epoch=100,
         batch_size=128,
-        #validation_data=(X_val, y_val),
+        validation_data=(X_val, y_val),
         callbacks=[
-            EarlyStopping(patience=2),
+            EarlyStopping(patience=1),
             TensorBoard(log_dir=tensorboard_logdir)
         ])
 
