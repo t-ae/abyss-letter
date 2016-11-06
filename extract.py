@@ -87,7 +87,7 @@ katakana_chars = [
     "HA", "HE",
     "MA", "MI", "ME", "MO",
     "RA", "RI", "RU", "RE", "RO",
-    "WA", " N",
+    "WA",
     "- "
 ]
 

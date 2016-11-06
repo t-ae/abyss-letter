@@ -32,17 +32,16 @@ generator = load_model(generator_path)
 p = generator.predict(images)
 
 plt.figure(figsize=(16, 4))
+plt.gray()
 n = 5
 for i in range(n):
     ax = plt.subplot(2, n, i+1)
     plt.imshow(images[i].reshape(32, 32))
-    plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
     ax = plt.subplot(2, n, i + n + 1)
     plt.imshow(p[i].reshape(32, 32))
-    plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 plt.show()
