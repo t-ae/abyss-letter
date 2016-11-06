@@ -1,3 +1,5 @@
+[http://qiita.com/t-ae/items/8424c7b788ee8c5c2109](http://qiita.com/t-ae/items/8424c7b788ee8c5c2109)
+
 # Setup
 1. Put ETL6 and ETL7 directories on root directory ([ETL Character Database](http://etlcdb.db.aist.go.jp/)).
 1. Run `./extract.py`. npy files will be created under "data" directory.
